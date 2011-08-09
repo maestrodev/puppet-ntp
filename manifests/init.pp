@@ -10,7 +10,23 @@
 #
 class ntp {
 
-    package { "ntp": }
+	# Solaris uses a differnet package name
+
+	packageName => $operatingsystem ? {
+		Solaris => "SUNWntpu",
+		default => "ntp"
+	}
+	
+	# RedHat uses "ntpd", whereas "ntp" works for nearly everything else
+	
+	serviceName => $operatingsystem ? {
+		RedHat => "ntpd",
+		default => "ntp"
+	}
+
+    package { "ntp": 
+		name => "$packageName"
+	}
 
     file { "/etc/ntp.conf":
         mode    => "644",
@@ -20,6 +36,7 @@ class ntp {
     } # file
 
     service { "ntpd":
+		name => "$serviceName",
         ensure  => running,
         enable  => true,
         require => Package["ntp"],
