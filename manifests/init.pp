@@ -10,7 +10,7 @@
 #
 class ntp {
 
-	# Solaris uses a differnet package name
+	# Solaris uses a different package name
 
 	packageName => $operatingsystem ? {
 		Solaris => "SUNWntpu",
