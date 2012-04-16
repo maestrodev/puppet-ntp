@@ -23,22 +23,29 @@ class ntp( $ntpServerList ) {
             $ntp_package = "ntp" 
             $ntp_service = "ntpd" 
         }
+        /Solaris/: { 
+            $ntp_package = "SUNWntpu" 
+            $ntp_service = "ntp" 
+        }
         default: { 
             $ntp_package = "ntp" 
             $ntp_service = "ntpd" 
         }
     } # case
 
-    package { $ntp_package: }
+    package { 'ntp':
+      name => $ntp_package
+    }
 
     file { "/etc/ntp.conf":
         mode    => "644",
         content => template("ntp/client-ntp.conf.erb"),
-        notify  => Service[$ntp_service],
-        require => Package[$ntp_package],
+        notify  => Service['ntpd'],
+        require => Package['ntp'],
     } # file
 
-    service { $ntp_service:
+    service { 'ntpd':
+		name => $ntp_service,
         ensure  => running,
         enable  => true,
         require => Package[$ntp_package],
