@@ -1,6 +1,10 @@
-Ntp Puppet Module. Copyright (C) 2010 Garrett Honeycutt
+Ntp Puppet Module.
+Copyright (C) 2010-2012 Garrett Honeycutt, Steve Huff, Andrew Beresford, MaestroDev, Inc.
 
-Garrett Honeycutt can be contacted at: contact@garretthoneycutt.com.
+Made from contributions from
+https://github.com/ghoneycutt/puppet-ntp
+https://github.com/hakamadare/puppet-ntp
+https://github.com/beezly/puppet-ntp
 
 This program and entire repository is free software; you can
 redistribute it and/or modify it under the terms of the GNU

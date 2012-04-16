@@ -1,2 +1,2 @@
-name    'ghoneycutt-ntp'
-version '1.0.1'
+name    'maestrodev-ntp'
+version '1.0.2'
