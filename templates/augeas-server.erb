@@ -1,0 +1,4 @@
+rm server
+<% servers.each do |server| -%>
+  set server[last()+1] <%= server %>
+<% end -%>

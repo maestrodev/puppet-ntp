@@ -1,17 +1,23 @@
-# Class: ntp
+# = Class: ntp
 #
-# This module manages ntp and is standard for all hosts
+# This module manages ntp and is standard for all hosts.
 #
-# Requires:
-#   $ntpServerList must be passed in as a parameter
+# == Parameters:
 #
-# Sample Usage:
-#   class {
-#       "ntp":
-#           ntpServerList => [ "127.0.0.1" ];
+# $servers:: the servers to use for NTP.
+#
+# == Actions:
+#   Install the ntp package, configure it and enable the service
+#
+# == Requires:
+#
+# == Sample Usage:
+#
+#   class {'ntp':
+#     servers => [ '0.pool.ntp.org', '1.pool.ntp.org', '2.pool.ntp.org', '3.pool.ntp.org' ],
 #   }
 #
-class ntp( $ntpServerList ) {
+class ntp( $servers = undef ) {
 
     # the ntp package and service has a different name under RHEL vs. Debian
     case $operatingsystem {
@@ -35,19 +41,21 @@ class ntp( $ntpServerList ) {
 
     package { 'ntp':
       name => $ntp_package
-    }
-
-    file { "/etc/ntp.conf":
-        mode    => "644",
-        content => template("ntp/client-ntp.conf.erb"),
-        notify  => Service['ntpd'],
-        require => Package['ntp'],
-    } # file
+    } ->
 
     service { 'ntpd':
-		name => $ntp_service,
-        ensure  => running,
-        enable  => true,
-        require => Package[$ntp_package],
+        name   => $ntp_service,
+        ensure => running,
+        enable => true,
     } # service
+
+    if $servers != undef {
+      augeas { 'ntp':
+        context => '/files/etc/ntp.conf',
+        changes => template('ntp/augeas-server.erb'),
+        require => Package['ntp'],
+        notify  => Service['ntpd'],
+      }
+    }
+
 } # class ntp
