@@ -1,5 +1,9 @@
 ntp
 
+=====================================
+NOTE: we are using puppetlabs-ntp now
+=====================================
+
 This is the ntp module which manages ntp clients and servers
 
 # Class: ntp
